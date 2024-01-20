@@ -14,7 +14,15 @@ exports.homepage = async(req, res) => {
 
         const limitNumber = 5;
         const categories = await category.find({}).limit(limitNumber);
-        res.render('index', { title: 'Cooking Blog - Home', categories } );
+        const latest = await recipe.find({}).sort({_id: -1}).limit(limitNumber);
+        const thai = await recipe.find({ 'category': 'Thai' }).limit(limitNumber);
+        const american = await recipe.find({ 'category': 'American' }).limit(limitNumber);
+        const chinese = await recipe.find({ 'category': 'Chinese' }).limit(limitNumber);
+
+        const food = { latest, thai, american, chinese };
+
+
+        res.render('index', { title: 'Cooking Blog - Home', categories, food } );
     } catch (error) {
         res.satus(500).send({message: error.message || "Error Occured"})
     }
