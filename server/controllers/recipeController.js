@@ -24,7 +24,7 @@ exports.homepage = async(req, res) => {
 
         res.render('index', { title: 'Cooking Blog - Home', categories, food } );
     } catch (error) {
-        res.satus(500).send({message: error.message || "Error Occured"})
+        res.status(500).send({message: error.message || "Error Occured" });
     }
 
 
@@ -43,12 +43,46 @@ exports.exploreCategories = async(req, res) => {
         const categories = await category.find({}).limit(limitNumber);
         res.render('categories', { title: 'Cooking Blog - Categories', categories } );
     } catch (error) {
-        res.satus(500).send({message: error.message || "Error Occured"})
-    }
-
-
-    
+        res.status(500).send({message: error.message || "Error Occured" });
+    }   
 }
+
+
+/**
+ * GET /recipe
+ * Recipe 
+*/
+
+exports.exploreRecipe = async(req, res) => {
+
+    try {
+        let recipeId = req.params.id;
+        const Recipe = await recipe.findById(recipeId);
+        res.render('recipe', { title: 'Cooking Blog - Recipe', Recipe } );
+    } catch (error) {
+        res.status(500).send({message: error.message || "Error Occured" });
+    }   
+}
+
+/**
+ * GET/categories/:id
+ * Categories by ID
+*/
+
+exports.exploreCategoriesById = async(req, res) => {
+    try {
+        let categoryId = req.params.id;
+        const limitNumber = 20;
+        const categoryById = await recipe.find({ 'category':  categoryId }).limit(limitNumber);
+        res.render('categories', { title: 'Cooking Blog - Categories', categoryById } );
+    } catch (error) {
+        res.status(500).send({message: error.message || "Error Occured" });
+    }   
+}
+
+
+
+
 
 
 /** 
